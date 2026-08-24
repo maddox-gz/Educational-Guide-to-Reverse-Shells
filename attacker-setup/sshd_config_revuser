@@ -1,0 +1,15 @@
+# Hardened SSH configuration for reverse tunnel user
+# Place this file in /etc/ssh/sshd_config.d/revuser.conf
+
+Match User revuser
+    AllowTcpForwarding yes
+    # Limit forwarding to specific local ports on the server
+    PermitOpen localhost:2222 localhost:4444
+    X11Forwarding no
+    PermitTTY no
+    # No shell access
+    ForceCommand /bin/false
+    PasswordAuthentication no
+    PubkeyAuthentication yes
+    # Restrict to only this user
+    AllowUsers revuser
