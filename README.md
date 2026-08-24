@@ -1,23 +1,49 @@
-# Educational-Guide-to-Reverse-Shells
+# Reverse SSH Tunnel Toolkit
 
 
-## Legal Disclaimer
-This information is provided for educational and authorized testing purposes only. Unauthorized access to computer systems is illegal. Always obtain explicit permission before using these techniques.
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS-lightgrey)
+![Status](https://img.shields.io/badge/Status-Educational-orange)
+
+> **LEGAL DISCLAIMER**  
+> This repository is intended **solely for educational purposes, authorized penetration testing, and legitimate remote administration**.  
+> Unauthorized access to computer systems is illegal and may result in severe criminal and civil penalties.  
+> **Always obtain explicit written permission** before using any technique or code contained herein.  
+> The authors assume no liability for misuse.
 
 
-## What is a Reverse SSH Shell?
-A traditional SSH connection flows from the client (attacker) to the server (target). If the target is behind a firewall or NAT, inbound SSH may be blocked. A reverse SSH tunnel reverses the direction: the target machine (client) connects outbound to an attacker‑controlled SSH server, then creates a tunnel that allows the attacker to connect back to the target’s SSH service (or any other port) through the established connection.
+## Overview
 
-The result is a fully encrypted, authenticated channel that can be used to obtain a shell on the target.
+**Reverse SSH Tunnel Toolkit** demonstrates how to establish an encrypted, authenticated remote shell to a machine that is behind a firewall or NAT and **cannot accept inbound connections**.  
+The target initiates an outbound SSH connection to a controlled server and creates a reverse port forward. The operator can then connect to a local port on that server to reach the target’s SSH daemon (or a custom listener), effectively gaining a shell.
+
+This technique is commonly used by:
+
+- System administrators for managing devices in restrictive networks
+- Penetration testers during authorized engagements
+- Security researchers studying network tunneling
 
 
-## Scenario Overview
+## Features
 
-· Attacker Machine (public IP, SSH server running)
-· Target Machine (behind firewall, outbound SSH allowed)
+- **Pure SSH** – uses only OpenSSH client/server, no extra dependencies
+- **Automatic reconnection** via `autossh` (optional)
+- **Systemd service** for persistence on Linux targets
+- **Configurable** via environment file or command-line arguments
+- **Comprehensive logging** with timestamps and log levels
+- **Security hardened** setup script for the attacker’s server
+- **Two reverse shell modes**:
+  1. Reverse tunnel to the target’s own SSH server
+  2. Reverse tunnel to a custom `netcat`/`socat` listener spawning `/bin/bash`
+- **Detailed documentation** including architecture, security, and troubleshooting
 
-The target will run a script that:
 
-1. Establishes an SSH connection to the attacker’s machine.
-2. Sets up a reverse port forward (-R) so that a port on the attacker’s machine is forwarded to a port on the target (e.g., the target’s own SSH server or a netcat listener).
-3. The attacker then connects to that local port on their own machine to gain access to the target.
+## Quick Start
+
+### 1. On the Attacker Server (public IP)
+
+```bash
+git clone https://github.com/maddox-gz/reverse-ssh-tunnel-lab.git
+cd reverse-ssh-tunnel-lab/attacker-setup
+chmod +x setup-attacker.sh
+sudo ./setup-attacker.sh
