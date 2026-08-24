@@ -43,7 +43,7 @@ This technique is commonly used by:
 ### 1. On the Attacker Server (public IP)
 
 ```bash
-git clone https://github.com/maddox-gz/reverse-ssh-tunnel-lab.git
+git clone https://github.com/maddox-gz/Educational-Guide-to-Reverse-Shells.git
 cd reverse-ssh-tunnel-lab/attacker-setup
 chmod +x setup-attacker.sh
 sudo ./setup-attacker.sh
